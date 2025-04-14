@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('SIGN IN.PNG') no-repeat center center/cover; /* Full-page background image */
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      animation: fadeIn 1.2s ease forwards;
+      margin-top: 70px; /* Move container down */
+    }
+
+    .left {
+      display: none; /* Remove the left section */
+    }
+
+    .right {
+      flex: none; /* Remove flex behavior */
+      background: none; /* Remove background from the right section */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: slideRight 1.2s ease;
+    }
+
+    .form-box {
+      width: 80%;
+      max-width: 400px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5); /* Greenish shadow */
+      border-radius: 12px;
+      background-color: #f1f8e9; /* Soft green background */
+      animation: fadeUp 1.4s ease;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2e7d32; /* Forest green */
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #a5d6a7; /* Light green border */
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #2e7d32; /* Forest green */
+      outline: none;
+      box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2e7d32; /* Forest green */
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1b5e20; /* Darker green */
+    }
+
+    .options {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .options a {
+      color: #2e7d32; /* Forest green */
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .options a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes slideLeft {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        margin-top: 20px; /* Adjust spacing for smaller screens */
+      }
+
+      .left {
+        display: none;
+      }
+
+      .right {
+        flex: 1;
+        padding: 30px 10px;
+      }
+
+      .form-box {
+        width: 100%;
+        padding: 20px; /* Reduce padding for smaller screens */
+      }
+
+      h2 {
+        font-size: 1.5rem; /* Adjust heading size */
+      }
+    }
+
+    header {
+      display: block; /* Restore the header */
+      position: absolute;
+      top: 10px; /* Move header up */
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Anton', sans-serif; /* Use Anton font */
+      font-size: 100px; /* Adjust font size */
+      color: white; /* Set font color to white */
+      font-weight: 700;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.5rem; /* Slightly larger font size */
+      color: #2e7d32; /* Forest green */
+      margin-top: 10px;
+    }
+
+    .popup-overlay,
+    .popup {
+      display: none; /* Remove popup elements */
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+      display: none; /* Hidden by default */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup {
+      background: #f1f8e9; /* Soft green background */
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5); /* Greenish shadow */
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .popup h2 {
+      margin-bottom: 20px;
+      color: #2e7d32; /* Forest green */
+    }
+
+    .popup button.close-btn {
+      background: #2e7d32; /* Forest green */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    .popup button.close-btn:hover {
+      background: #1b5e20; /* Darker green */
+    }
+
+    /* Subtle Animations for Form Elements */
+    input, button {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:hover, button:hover {
+      transform: scale(1.02); /* Slight zoom effect */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    }
+
+    /* Background Overlay */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+      z-index: -1; /* Place behind content */
+    }
+
+    /* Tooltip Styling */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: #2e7d32; /* Forest green */
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%; /* Position above the input */
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <h1>ISLAND FRIENDS</h1>
+    <!-- Removed "It's Free!" -->
+  </header>
+
+  <!-- Main Content -->
+  <div class="container" id="main-content">
+    <!-- Left Side (Background Image) -->
+    <div class="left"></div>
+
+    <!-- Right Side (Form) -->
+    <div class="right">
+      <div class="form-box">
+        <h2 id="form-title">Sign In</h2>
+        <form id="sign-in-form">
+          <div class="tooltip">
+            <input type="email" placeholder="Email" required />
+            <span class="tooltip-text">Enter a valid email address</span>
+          </div>
+          <div class="tooltip">
+            <input type="password" placeholder="Password" required />
+            <span class="tooltip-text">Password must be at least 8 characters</span>
+          </div>
+          <button type="submit">Sign In</button>
+        </form>
+        <form id="sign-up-form" style="display: none;">
+          <div class="tooltip">
+            <input type="text" placeholder="Full Name" required />
+            <span class="tooltip-text">Enter your full name</span>
+          </div>
+          <div class="tooltip">
+            <input type="email" placeholder="Email" required />
+            <span class="tooltip-text">Enter a valid email address</span>
+          </div>
+          <div class="tooltip">
+            <input type="password" placeholder="Password" required />
+            <span class="tooltip-text">Password must be at least 8 characters</span>
+          </div>
+          <div class="tooltip">
+            <input type="password" placeholder="Confirm Password" required />
+            <span class="tooltip-text">Re-enter your password</span>
+          </div>
+          <button type="submit">Sign Up</button>
+        </form>
+        <div class="options">
+          <a href="#" id="toggle-link">Don't have an account? Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const toggleLink = document.getElementById('toggle-link');
+    const formTitle = document.getElementById('form-title');
+    const signInForm = document.getElementById('sign-in-form');
+    const signUpForm = document.getElementById('sign-up-form');
+
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (signInForm.style.display === 'none') {
+        signInForm.style.display = 'block';
+        signUpForm.style.display = 'none';
+        formTitle.textContent = 'Sign In';
+        toggleLink.textContent = "Don't have an account? Sign Up";
+      } else {
+        signInForm.style.display = 'none';
+        signUpForm.style.display = 'block';
+        formTitle.textContent = 'Sign Up';
+        toggleLink.textContent = 'Already have an account? Sign In';
+      }
+    });
+  </script>
+
+</body>
+</html>
