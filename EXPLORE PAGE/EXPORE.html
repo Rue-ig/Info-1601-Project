@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            max-height: 100vh;
+            min-width: 100vw;
+            max-width: 100vw;
+            background: blue;
+        }
+
+        header {
+            box-shadow: 0px 6px 5px -1px rgba(0, 0, 0, 0.31);
+            position: sticky;
+            top: 0px;
+            left: 0px;
+            background-color: #0C580D;
+            flex-grow: 1;
+            width: 100vw;
+        }
+
+        header p {
+            color: white;
+            text-align: center;
+            font-size: 2em;
+            margin-top: 1em;
+        }
+
+        header nav {
+            padding: 1em;
+            display: flex;
+            justify-content: center;
+        }
+
+        main {
+            overflow: auto;
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            background: #FEFEE3;
+            flex-grow: 8;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .navButtons {
+            background-color: #0C580D;
+            color: white;
+            border: none;
+            padding: 1em;
+            cursor: pointer;
+        }
+
+        .navButtons:hover {
+            background-color: #FFC9B9;
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <p>Island Friends</p>
+
+        <nav>
+            <button class="navButtons">Explore</button>
+            <button class="navButtons">Favourites</button>
+            <button class="navButtons">About Us</button>
+        </nav>
+    </header>
+
+    <main>
+        <div>
+            <p>Meet our Island Friends</p>
+        </div>
+    </main>
+</body>
+</html>
