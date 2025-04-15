@@ -57,11 +57,22 @@ nav {
   height: 60px;
   border-radius: 15px;
   margin-right: 10px; /* Space between logo and title */
-  
   margin-left: 10px;
   margin-top: 5px;
 }
-
+#profile {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+#profile:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
 .navbar ul {
   color: white;
   list-style-type: none;
@@ -101,8 +112,8 @@ li a {
 
 
 li a:hover {
-  background-color: white;
-  color: #111;
+  background-color: #0C580D;
+  color: white;
 }
 
 
@@ -246,8 +257,8 @@ main {
 }
 
 .fav-btn {
-  background-color: #ffbe0b;
-  color: #1e1e1e;
+  background-color: #28190E;
+  color: white;
   border: none;
   padding: 10px 16px;
   margin: 10px 16px 16px;
@@ -257,7 +268,7 @@ main {
 }
 
 .fav-btn:hover {
-  background-color: #ff9f1c;
+  background-color: #0C580D;
 }
 
 aside {
@@ -270,8 +281,8 @@ aside {
 }
 
 #nextfact {
-  background-color: #ffbe0b;
-  color: #1e1e1e;
+  background-color: #28190E;
+  color: white;
   border: none;
   padding: 10px 16px;
   margin: 10px 16px 16px;
@@ -280,7 +291,7 @@ aside {
   font-weight: bold;
 }
 #nextfact:hover {
-  background-color: #ff9f1c;
+  background-color: #0C580D;
 }
 #fact {
   font-size: 1.2rem;
