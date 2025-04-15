@@ -24,30 +24,29 @@
 
     .container {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      animation: fadeIn 1.2s ease forwards;
-      margin-top: 70px; /* Move container down */
+      justify-content: space-between; /* Space between the two containers */
+      align-items: flex-start; /* Align items at the top */
+      height: auto; /* Adjust height to fit content */
+      margin-top: 150px; /* Move containers further down */
+      padding: 0 50px; /* Add padding for spacing */
     }
 
     .right {
-      flex: none; /* Remove flex behavior */
-      background: none; /* Remove background from the right section */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: slideRight 1.2s ease;
+      flex: 1; /* Allow the form container to take up space */
+      margin-right: 20px; /* Add spacing between the form and the widget */
+    }
+
+    .form-box, .animal-widget {
+      background-color: rgba(241, 248, 233, 0.6); /* Soft green with 60% transparency */
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5); /* Greenish shadow */
+      width: 320px; /* Match the width of the animal widget */
+      flex-shrink: 0; /* Prevent shrinking */
     }
 
     .form-box {
-      width: 80%;
-      max-width: 400px;
-      padding: 40px;
-      box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5); /* Greenish shadow */
-      border-radius: 12px;
-      background-color: #f1f8e9; /* Soft green background */
-      animation: fadeUp 1.4s ease;
+      max-width: none; /* Remove the max-width restriction */
     }
 
     h2 {
@@ -214,6 +213,41 @@
       visibility: visible;
       opacity: 1;
     }
+
+    .animal-widget {
+      background-color: rgba(241, 248, 233, 0.6); /* Soft green with 60% transparency */
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      flex-shrink: 0; /* Prevent the widget from shrinking */
+      text-align: center; /* Center-align content */
+    }
+
+    .animal-widget h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .animal-subtitle {
+      font-size: 16px;
+      color: #2e7d32; /* Forest green */
+      margin-bottom: 15px;
+    }
+
+    .animal-image {
+      width: 100%;
+      height: auto;
+      max-height: 200px; /* Limit the height of the image */
+      border-radius: 8px;
+      object-fit: cover; /* Ensure the image fits nicely */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow to the image */
+    }
   </style>
 </head>
 <body>
@@ -224,7 +258,7 @@
 
   <!-- Main Content -->
   <div class="container" id="main-content">
-    <!-- Right Side (Form) -->
+    <!-- Left Side (Form) -->
     <div class="right">
       <div class="form-box">
         <h2 id="form-title">Sign In</h2>
@@ -263,7 +297,16 @@
         </div>
       </div>
     </div>
+
+    <!-- Right Side (Animal Widget) -->
+    <div class="animal-widget">
+      <h2>🐾 Animal of the Day</h2>
+      <div class="animal-subtitle">Red Fox</div>
+      <img src="../images/placeholder.png" alt="Animal of the Day" class="animal-image" />
+    </div>
   </div>
+
+
   <script>
     const toggleLink = document.getElementById('toggle-link');
     const formTitle = document.getElementById('form-title');
