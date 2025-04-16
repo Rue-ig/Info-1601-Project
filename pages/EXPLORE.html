@@ -27,92 +27,90 @@
 
     <main class="main-content">
         <h2>Meet our Island Friends!</h2>
-        <!-- Slideshow container -->
-        <div class="slideshow-container">
-
-            <!-- Full-width images with number and caption text -->
-            <div class="mySlides fade">
-                <div class="numbertext">1 / 3</div>
-                <img src="../images/scarletibis.jpg" style="width:100%">
-                <div class="text">Caption Text</div>
-            </div>
-
-            <div class="mySlides fade">
-                <div class="numbertext">2 / 3</div>
-                <img src="img2.jpg" style="width:100%">
-                <div class="text">Caption Two</div>
-            </div>
-
-            <div class="mySlides fade">
-                <div class="numbertext">3 / 3</div>
-                <img src="img3.jpg" style="width:100%">
-                <div class="text">Caption Three</div>
-            </div>
-
-            <!-- Next and previous buttons -->
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
-        </div>
+        <h3 style="text-align: center;">Discover the vibrant wildlife of the Caribbean!</h3>
+        
         <br>
 
-        <!-- The dots/circles -->
-        <div style="text-align:center">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
+        <!-- Slideshow Section -->
+        <div class="animal-slideshow">
+            <div class="slide-container" id="animal-slide-container">
+                <!-- Slides will be added here dynamically -->
+            </div>
+
+            <button class="slide-btn prev" onclick="changeSlide(-1)">❮</button>
+            <button class="slide-btn next" onclick="changeSlide(1)">❯</button>
+
+            <div class="slide-dots" id="slide-dots"></div>
         </div>
 
-    <div class="secondary-content">
-    
-        <div class="gallery">
-            <div class="card">
-                <img src="../images/wildlifebackground.jpeg" alt="Green Iguana">
-                <h2>Green Iguana</h2>
-                <p>A chill tree-loving lizard found across the Caribbean.</p>
-                <button class="fav-btn">⭐ Favorite</button>
-            </div>
+        <!-- Filter Buttons -->
+        <div id="filter-container">
+            <label for="type-filter">Filter by type:</label>
+            <select id="type-filter">
+                <option value="all">All</option>
+            </select>
 
-            <div class="card">
-                <img src="../images/sisserouparrot.jpg" alt="Macaw">
-                <h2>Macaw</h2>
-                <p>Bright, talkative, and full of vibes. You’ll hear them before you see them!</p>
-                <button class="fav-btn">⭐ Favorite</button>
-            </div>
-
-            <div class="card">
-                <img src="https://source.unsplash.com/300x200/?sea-turtle" alt="Sea Turtle">
-                <h2>Hawksbill Turtle</h2>
-                <p>Lives in coral reefs — graceful and endangered. Respect di reef!</p>
-                <button class="fav-btn">⭐ Favorite</button>
-            </div>
-
+            <label for="country-filter">Filter by country:</label>
+            <select id="country-filter">
+                <option value="all">All</option>
+            </select>
         </div>
-
-        <aside>
+        <br>
+        <!-- Did You Know? Section -->
+        <section>
             <h2>Did You Know?</h2>
             <p id="fact">The Caribbean is home to over 700 species of birds...</p>
             <button id="nextfact" onclick="showNextFact()">Next Fact</button>
-        </aside>
-    </div>
+        </section>
+        <br>
+        <!-- Animal Gallery Section -->
+        <div class="secondary-content">
+            <div class="gallery" id="gallery">
+                <!-- <div class="card">
+                    <img src="../images/wildlifebackground.jpeg" alt="Green Iguana">
+                <h2>Green Iguana</h2>
+                <p>A chill tree-loving lizard found across the Caribbean.</p>
+                <button class="fav-btn">⭐ Favorite</button> -->
+                <!-- </div> -->
+
+                <!-- <div class="card">
+                    <img src="../images/sisserouparrot.jpg" alt="Macaw">
+                    <h2>Macaw</h2>
+                    <p>Bright, talkative, and full of vibes. You’ll hear them before you see them!</p>
+                    <button class="fav-btn">⭐ Favorite</button>
+                </div>
+                
+                <div class="card">
+                    <img src="https://source.unsplash.com/300x200/?sea-turtle" alt="Sea Turtle">
+                <h2>Hawksbill Turtle</h2>
+                <p>Lives in coral reefs — graceful and endangered. Respect di reef!</p>
+                <button class="fav-btn">⭐ Favorite</button>
+            </div> -->
+            </div>
+
+        </div>
     </main>
 
-    <script src="main.js"></script>
-    <script>
-         const facts = [
-    "The Caribbean is home to over 700 species of birds, including the endangered Roseate Spoonbill and the majestic Frigatebird.",
-    "Many Caribbean islands have unique ecosystems, with species that can only be found in those specific locations.",
-    "Coral reefs in the Caribbean are some of the most diverse and vibrant in the world.",
-    "Some Caribbean islands are home to endemic species, meaning they are found nowhere else on Earth.",
-    "The Caribbean Sea is one of the largest saltwater seas and supports millions of marine creatures."
-  ];
+    <script src="../main.js"></script>
 
-  let currentFact = 0;
+    <!-- <footer class="site-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <h3>Island Friends</h3>
+            <p>Where Caribbean Wildlife Come Alive 🐢🦜</p>
+          </div>
+          <div class="footer-links">
+            <a href="explore.html">Explore</a>
+            <a href="About Us.html">About Us</a>
+            <a href="Favourites.html">Favourites</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Island Friends. Made with 🌴 from the Caribbean.</p>
+        </div>
+      </footer> -->
+      
 
-  function showNextFact() {
-    currentFact = (currentFact + 1) % facts.length;
-    document.getElementById("fact").textContent = facts[currentFact];
-  }
-    </script>
 </body>
 
 </html>
