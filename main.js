@@ -90,7 +90,7 @@ function getCountriesFound(rec) {
     const fullNames = foundIn.map(code => countryMap[code]);
 
     return fullNames.length
-        ? `Found in: ${fullNames.join(", ")}`
+        ? `<p><strong>Found in:</strong></p> ${fullNames.join(", ")}`
         : "Not found in listed countries";
 }
 
@@ -155,86 +155,68 @@ document.getElementById('country-filter').addEventListener('change', renderFilte
 // Slideshow functionality
 const apiUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLh-vRW6fxasGQMdqJGzo9NFWjegB-FMraDNUMUSFlRLaSMz_33hK6kiRY-0C0xNgob6w307ciFCz-bOWPZfovIwM-ky7y89iEFlB1FSuvjtmXXJx-rhgL9yHD6_c2LEUZ77VCKMJYTHdBkk85ThzbfoPeqTQSdmsmsodf9jWEdgmyPKrBqMU9cY9dyA0Fo1_3ogr-ZM7zgujNJ0A7Z6jswCyT-0BNi8zsPfOVwVnd06391J7qxG5icZjR90PhDxMDBebEXdCml7CfFCBKCz9XoLpPds6Zl12hdEcYJgavBVSw9jY5O0A5qGd_pilJSLzs01NBVZ&lib=MWE_QBjJXwXXD4bogbvGarrsOYE1fA0Zf';
 
-let animalData = [];
-let currentSlideIndex = 0;
-let slideInterval;
+let slideIndex = 1;
 
-async function fetchAnimals() {
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        animalData = data.records || data.data || [];
+async function loadSlideshow() {
+  try {
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+    const records = data.records || data.data || [];
 
-        if (animalData.length === 0) {
-            document.getElementById("animal-slide-container").innerHTML = "<p>No animals found.</p>";
-            return;
-        }
+    const slideshow = document.getElementById('animal-slide-container');
+    const dots = document.getElementById('dot-container');
 
-        renderSlides();
-        startAutoSlide();
-    } catch (err) {
-        console.error("API fetch failed:", err);
-    }
-}
+    slideshow.innerHTML = '';
+    dots.innerHTML = '';
 
-function renderSlides() {
-    const container = document.getElementById("animal-slide-container");
-    const dotsContainer = document.getElementById("slide-dots");
+    records.forEach((rec, i) => {
+      slideshow.innerHTML += `
+        <div class="mySlides fade">
+          <div class="numbertext">${i + 1} / ${records.length}</div>
+          <img src="${rec.Image}" style="width:100%" alt="${rec["Common Name"]}">
+          <div class="text">${rec["Common Name"]}: ${rec["Description"]}</div>
+        </div>
+      `;
 
-    container.innerHTML = "";
-    dotsContainer.innerHTML = "";
-
-    animalData.forEach((animal, index) => {
-        container.innerHTML += `
-<div class="animal-slide">
-<img src="${animal.Image}" alt="${animal["Common Name"]}">
-<div class="text-overlay">
-  <h3>Can You Guess?</h3>
-  <p>${animal["Description"]}</p>
-</div>
-</div>
-`;
-
-        dotsContainer.innerHTML += `
-<span class="dot" onclick="goToSlide(${index})"></span>
-`;
+      dots.innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`;
     });
 
-    updateSlidePosition();
+    showSlides(slideIndex);
+  } catch (err) {
+    console.error('Failed to load slideshow data:', err);
+  }
 }
 
-function updateSlidePosition() {
-    const container = document.getElementById("animal-slide-container");
-    const dots = document.querySelectorAll(".dot");
-
-    container.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-
-    dots.forEach(dot => dot.classList.remove("active"));
-    if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add("active");
+function plusSlides(n) {
+  showSlides(slideIndex += n);
 }
 
-function changeSlide(direction) {
-    currentSlideIndex += direction;
-    if (currentSlideIndex < 0) currentSlideIndex = animalData.length - 1;
-    if (currentSlideIndex >= animalData.length) currentSlideIndex = 0;
-    updateSlidePosition();
+function currentSlide(n) {
+  showSlides(slideIndex = n);
 }
 
-function goToSlide(index) {
-    currentSlideIndex = index;
-    updateSlidePosition();
-    resetAutoSlide();
+function showSlides(n) {
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+
+  if (n > slides.length) { slideIndex = 1 }
+  if (n < 1) { slideIndex = slides.length }
+
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+
+  if (slides.length > 0) {
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+  }
 }
 
-function startAutoSlide() {
-    slideInterval = setInterval(() => {
-        changeSlide(1);
-    }, 10000); // 10 seconds
-}
+loadSlideshow();
 
-function resetAutoSlide() {
-    clearInterval(slideInterval);
-    startAutoSlide();
-}
-
-fetchAnimals();
+// Set interval for automatic slideshow
+let slideInterval = setInterval(() => plusSlides(1), 5000); // Change image every 5 seconds
