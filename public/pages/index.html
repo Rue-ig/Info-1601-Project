@@ -6,8 +6,6 @@
   <title>Sign In</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-  <script type="module" src="../auth.js" defer></script>
-
   <style>
     * {
       box-sizing: border-box;
@@ -281,31 +279,34 @@
         <form id="sign-in-form">
           <div id="error-message"></div> 
           <div class="tooltip">
-            <input type="email" placeholder="Email" id="email" required />
+            <input type="email" id="sign-in-email" name="email" placeholder="Email" autocomplete="email" required />
             <span class="tooltip-text">Enter a valid email address</span>
           </div>
           <div class="tooltip">
-            <input type="password" placeholder="Password" id="password" required />
+            <input type="password" id="sign-in-password" name="password" placeholder="Password" autocomplete="current-password" required />
             <span class="tooltip-text">Password must be at least 8 characters</span>
           </div>
-          <button type="submit" id="submit">Sign In</button>
+          <button type="submit">Sign In</button>
         </form>
-        
         <form id="sign-up-form" style="display: none;">
           <div id="error-message"></div> 
           <div class="tooltip">
-            <input type="text" placeholder="Full Name" id="name-reg" required />
+            <input type="text" id="sign-up-name" name="name" placeholder="Full Name" autocomplete="name" required />
             <span class="tooltip-text">Enter your full name</span>
           </div>
           <div class="tooltip">
-            <input type="email" placeholder="Email" id="email-reg" required />
+            <input type="email" id="sign-up-email" name="email" placeholder="Email" autocomplete="email" required />
             <span class="tooltip-text">Enter a valid email address</span>
           </div>
           <div class="tooltip">
-            <input type="password" placeholder="Password" id="password-reg" required />
+            <input type="password" id="sign-up-password" name="password" placeholder="Password" autocomplete="new-password" required />
             <span class="tooltip-text">Password must be at least 8 characters</span>
           </div>
-          <button type="submit" id="submit-reg">Sign Up</button>
+          <div class="tooltip">
+            <input type="password" id="sign-up-confirm-password" name="confirm-password" placeholder="Confirm Password" autocomplete="new-password" required />
+            <span class="tooltip-text">Re-enter your password</span>
+          </div>
+          <button type="submit">Sign Up</button>
         </form>
         <div class="options">
           <a href="#" id="toggle-link">Don't have an account? Sign Up</a>
@@ -316,17 +317,15 @@
     <!-- Right Side (Animal Widget) -->
     <div class="animal-widget">
       <div class="animal-subtitle" id="animal-name">Loading...</div>
-      <img src="../images/placeholder.png" alt="Animal of the Day" class="animal-image" id="animal-image" />
+      <img alt="Animal of the Day" class="animal-image" id="animal-image" style="display: none;" />
     </div>
   </div>
-
   <script>
     // Toggle between Sign In and Sign Up forms
     const toggleLink = document.getElementById('toggle-link');
     const formTitle = document.getElementById('form-title');
     const signInForm = document.getElementById('sign-in-form');
     const signUpForm = document.getElementById('sign-up-form');
-
     toggleLink.addEventListener('click', (e) => {
       e.preventDefault();
       if (signInForm.style.display === 'none') {
@@ -356,8 +355,10 @@
 
         // Update the Animal of the Day section
         document.getElementById('animal-name').textContent = randomAnimal["Common Name"] || "Unknown Animal";
-        document.getElementById('animal-image').src = randomAnimal.Image || "../images/placeholder.png";
-        document.getElementById('animal-image').alt = randomAnimal["Common Name"] || "Animal of the Day";
+        const animalImage = document.getElementById('animal-image');
+        animalImage.src = randomAnimal.Image || 'https://via.placeholder.com/320x200?text=No+Image+Available';
+        animalImage.alt = randomAnimal["Common Name"] || "Animal of the Day";
+        animalImage.style.display = 'block'; // Show the image
       } catch (error) {
         console.error('Failed to fetch Animal of the Day:', error);
         document.getElementById('animal-name').textContent = "Failed to load animal.";
@@ -367,6 +368,45 @@
     // Call the function to fetch the Animal of the Day
     fetchAnimalOfTheDay();
   </script>
+  <script type="module">
+  import { initializeApp } from "../firebaseConfig.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
+  // Initialize Firebase
+  const app = initializeApp();
+  const auth = getAuth(app);
+
+  // Handle Sign-Up Form Submission
+  document.getElementById('sign-up-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.querySelector('#sign-up-email').value;
+    const password = e.target.querySelector('#sign-up-password').value;
+
+    try {
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+      alert(`Account created successfully for ${user.user.email}!`);
+      document.getElementById('toggle-link').click(); // Switch to sign-in form
+    } catch (error) {
+      console.error('[ERROR] Sign-up error:', error);
+      alert(error.message);
+    }
+  });
+
+  // Handle Sign-In Form Submission
+  document.getElementById('sign-in-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.querySelector('#sign-in-email').value;
+    const password = e.target.querySelector('#sign-in-password').value;
+
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      alert(`Sign-in successful for ${user.user.email}!`);
+      window.location.href = 'EXPLORE.html'; // Redirect to Explore page
+    } catch (error) {
+      console.error('[ERROR] Sign-in error:', error);
+      alert(error.message);
+    }
+  });
+</script>
 </body>
 </html>
