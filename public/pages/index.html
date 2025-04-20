@@ -279,24 +279,20 @@
         <form id="sign-in-form">
           <div id="error-message"></div> 
           <div class="tooltip">
-            <input type="email" id="sign-in-email" name="email" placeholder="Email" autocomplete="email" required />
-            <span class="tooltip-text">Enter a valid email address</span>
+            <input type="text" id="sign-in-username" name="username" placeholder="Username" autocomplete="username" required />
+            <span class="tooltip-text">Enter your username</span>
           </div>
           <div class="tooltip">
             <input type="password" id="sign-in-password" name="password" placeholder="Password" autocomplete="current-password" required />
-            <span class="tooltip-text">Password must be at least 8 characters</span>
+            <span class="tooltip-text">Enter your password</span>
           </div>
           <button type="submit">Sign In</button>
         </form>
         <form id="sign-up-form" style="display: none;">
           <div id="error-message"></div> 
           <div class="tooltip">
-            <input type="text" id="sign-up-name" name="name" placeholder="Full Name" autocomplete="name" required />
-            <span class="tooltip-text">Enter your full name</span>
-          </div>
-          <div class="tooltip">
-            <input type="email" id="sign-up-email" name="email" placeholder="Email" autocomplete="email" required />
-            <span class="tooltip-text">Enter a valid email address</span>
+            <input type="text" id="sign-up-username" name="username" placeholder="Username" autocomplete="username" required />
+            <span class="tooltip-text">Choose a unique username</span>
           </div>
           <div class="tooltip">
             <input type="password" id="sign-up-password" name="password" placeholder="Password" autocomplete="new-password" required />
@@ -368,45 +364,59 @@
     // Call the function to fetch the Animal of the Day
     fetchAnimalOfTheDay();
   </script>
-  <script type="module">
-  import { initializeApp } from "../firebaseConfig.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  <script>
+    // Handle Sign-Up Form Submission
+    document.getElementById('sign-up-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('sign-up-username').value;
+      const password = document.getElementById('sign-up-password').value;
+      const confirmPassword = document.getElementById('sign-up-confirm-password').value;
 
-  // Initialize Firebase
-  const app = initializeApp();
-  const auth = getAuth(app);
+      if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+      }
 
-  // Handle Sign-Up Form Submission
-  document.getElementById('sign-up-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = e.target.querySelector('#sign-up-email').value;
-    const password = e.target.querySelector('#sign-up-password').value;
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      if (users[username]) {
+        alert('Username already exists. Please choose another.');
+        return;
+      }
 
-    try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      alert(`Account created successfully for ${user.user.email}!`);
+      users[username] = { password, favourites: [] };
+      localStorage.setItem('users', JSON.stringify(users));
+      console.log('[DEBUG] Users after sign-up:', users); // Debugging step
+      alert('Account created successfully!');
       document.getElementById('toggle-link').click(); // Switch to sign-in form
-    } catch (error) {
-      console.error('[ERROR] Sign-up error:', error);
-      alert(error.message);
-    }
-  });
+    });
 
-  // Handle Sign-In Form Submission
-  document.getElementById('sign-in-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = e.target.querySelector('#sign-in-email').value;
-    const password = e.target.querySelector('#sign-in-password').value;
+    // Handle Sign-In Form Submission
+    document.getElementById('sign-in-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('sign-in-username').value;
+      const password = document.getElementById('sign-in-password').value;
 
-    try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      alert(`Sign-in successful for ${user.user.email}!`);
-      window.location.href = 'EXPLORE.html'; // Redirect to Explore page
-    } catch (error) {
-      console.error('[ERROR] Sign-in error:', error);
-      alert(error.message);
-    }
-  });
-</script>
+      if (!username || !password) {
+        alert('Please fill in all fields.');
+        console.log('[DEBUG] Empty username or password during sign-in.'); // Debugging step
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      console.log('[DEBUG] Users during sign-in:', users); // Debugging step
+      console.log('[DEBUG] Current username:', username); // Debugging step
+      console.log('[DEBUG] Current password:', password); // Debugging step
+
+      if (users[username] && users[username].password === password) {
+        localStorage.setItem('currentUser', username);
+        console.log('[DEBUG] Sign-in successful for:', username); // Debugging step
+        alert(`Welcome, ${username}!`);
+        window.location.href = 'EXPLORE.html'; // Redirect to Explore page
+      } else {
+        console.log('[DEBUG] Sign-in failed for:', username); // Debugging step
+        alert('Invalid username or password.');
+      }
+    });
+  </script>
 </body>
 </html>
