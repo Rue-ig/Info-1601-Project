@@ -1,66 +1,85 @@
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { firebaseApp } from "./firebaseConfig"; // Import the initialized Firebase app
+import { firebaseApp } from "./firebaseConfig";
 
-// Use the imported Firebase app to get the auth instance
 const auth = getAuth(firebaseApp);
 
-//sign in
-const submitButton = document.getElementById("submit");
-submitButton.addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent the default form submission
+// Function to display error messages
+function displayError(message) {
+    const errorDiv = document.getElementById("error-message"); // Make sure you have an element with this ID in your HTML
+    if (errorDiv) {
+        errorDiv.textContent = message;
+    } else {
+        alert(message); // Fallback to alert if no error element is found
+    }
+}
 
-    //sign in inputs and buttons
+// Sign-in
+const submitButton = document.getElementById("submit");
+submitButton.addEventListener("click", async function(event) {
+    event.preventDefault();
+
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    if (email && password) {
-        console.log("Email:", email);
-        console.log("Password:", password);
-        alert("Login successful!");
-    } else {
-        alert("Please enter both email and password.");
+    if (!email || !password) {
+        displayError("Please enter both email and password.");
+        return;
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert("Login successful!");
-            // Redirect to the explore page
-            window.location.href = "/explore.html";
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        }); 
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("Login successful:", user);
+        window.location.href = "/explore.html"; // Redirect on success
+    } catch (error) {
+        let errorMessage = "Login failed.";
+        switch (error.code) {
+            case "auth/user-not-found":
+                errorMessage = "No user found with that email.";
+                break;
+            case "auth/wrong-password":
+                errorMessage = "Incorrect password.";
+                break;
+            default:
+                errorMessage = "An unexpected error occurred. Please try again.";
+                console.error("Sign-in error:", error); // Log the error for debugging
+        }
+        displayError(errorMessage);
+    }
 });
 
-//sign up
+// Sign-up
 const submitButtonReg = document.getElementById("submit-reg");
-submitButtonReg.addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent the default form submission
+submitButtonReg.addEventListener("click", async function(event) {
+    event.preventDefault();
 
-    //sign up inputs and buttons
     const emailReg = document.getElementById("email-reg").value;
     const passwordReg = document.getElementById("password-reg").value;
     const nameReg = document.getElementById("name-reg").value;
 
-    createUserWithEmailAndPassword(auth, emailReg, passwordReg)
-        .then((userCredential) => {
-            const user = userCredential.user;
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, emailReg, passwordReg);
+        const user = userCredential.user;
 
-            // Update the user's profile with their name
-            updateProfile(user, {
-                displayName: nameReg
-            }).then(() => {
-                console.log("User profile updated with name:", nameReg);
-                alert("Sign-up successful!");
-            }).catch((error) => {
-                console.error("Error updating profile:", error.message);
-            });
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Error during sign-up:", errorMessage);
+        await updateProfile(user, {
+            displayName: nameReg
         });
+
+        console.log("User profile updated with name:", nameReg);
+        window.location.href = "./pages/EXPLORE.html"; // Redirect on success
+    } catch (error) {
+        let errorMessage = "Sign-up failed.";
+        switch (error.code) {
+            case "auth/email-already-in-use":
+                errorMessage = "That email is already in use.";
+                break;
+            case "auth/weak-password":
+                errorMessage = "The password is too weak (must be at least 6 characters).";
+                break;
+            default:
+                errorMessage = "An unexpected error occurred. Please try again.";
+                console.error("Sign-up error:", error); // Log the error for debugging
+        }
+        displayError(errorMessage);
+    }
 });
