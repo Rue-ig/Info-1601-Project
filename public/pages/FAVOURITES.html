@@ -1,11 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favourite Animals</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    
+  <!-- Header Section -->
+  <nav class="navbar">
+    <div id="title-container">
+      <img src="../images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
+      <h1 id="title">Island Friends</h1>
+      <img src="../images/profile.jpg" alt="profile" id="profile">
+    </div>
+    <h6>Where Caribbean Wildlife Come Alive!</h6>
+    <ul>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="About Us.html">About Us</a></li>
+      <li><a href="Favourites.html">Favourites</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1 style="text-align: center; color: #28190E; font-size: 2rem;">🌟 My Favourites!</h1>
+    <div class="gallery" id="favourites-list"></div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <img src="../images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
+        <h3>Island Friends</h3>
+      </div>
+      <div class="footer-links">
+        <a href="explore.html">Explore</a>
+        <a href="About Us.html">About Us</a>
+        <a href="Favourites.html">Favourites</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Island Friends. Built in di Caribbean, for di Caribbean — by Regional Variables.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function loadFavourites() {
+      try {
+        const rawFavourites = localStorage.getItem('favourites');
+        console.log("[DEBUG] Raw favourites data from localStorage:", rawFavourites);
+
+        if (!rawFavourites) {
+          console.warn("[DEBUG] No favourites found in localStorage.");
+          document.getElementById('favourites-list').innerHTML = "<p>No favourites added yet.</p>";
+          return;
+        }
+
+        const favourites = JSON.parse(rawFavourites);
+        console.log("[DEBUG] Parsed favourites data:", favourites);
+
+        if (!Array.isArray(favourites)) {
+          throw new Error("Favourites data is not an array.");
+        }
+
+        const container = document.getElementById('favourites-list');
+        if (favourites.length === 0) {
+          console.warn("[DEBUG] Favourites array is empty.");
+          container.innerHTML = "<p>No favourites added yet.</p>";
+          return;
+        }
+
+        let html = '';
+        favourites.forEach((rec, index) => {
+          console.log(`[DEBUG] Rendering favourite #${index + 1}:`, rec);
+
+          const commonName = typeof rec["Common Name"] === "string" ? rec["Common Name"] : "Unknown";
+          const safeCommonName = commonName.replace(/'/g, "\\'"); // Ensure it's safe for use in HTML
+
+          html += `
+            <div class="card">
+              <img src="${rec.Image || '../images/placeholder.png'}" alt="${commonName}">
+              <h3>${commonName}</h3>
+              <p><strong>Scientific Name:</strong> ${rec["Scientific Name"] || 'N/A'}</p>
+              <p>${rec["Description"] || 'No description available.'}</p>
+              <p><strong>Type:</strong> ${rec["type"] || 'N/A'}</p>
+              <button class="fav-btn" onclick="removeFromFavourites('${safeCommonName}')">❌ Remove</button>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      } catch (error) {
+        console.error("[ERROR] Failed to load favourites:", error);
+        document.getElementById('favourites-list').innerHTML = "<p>Error loading favourites. Please try again later.</p>";
+      }
+    }
+
+    function removeFromFavourites(commonName) {
+      try {
+        console.log("[DEBUG] Removing favourite:", commonName);
+        let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+        favourites = favourites.filter(item => item["Common Name"] !== commonName);
+        console.log("[DEBUG] Updated favourites after removal:", favourites);
+        localStorage.setItem('favourites', JSON.stringify(favourites));
+        loadFavourites(); // Refresh the list
+      } catch (error) {
+        console.error("[ERROR] Failed to remove favourite:", error);
+      }
+    }
+
+    loadFavourites();
+  </script>
 </body>
 </html>
