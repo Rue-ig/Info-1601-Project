@@ -110,19 +110,20 @@ function renderFilteredGallery() {
   const loadingMessage = document.getElementById('loading-message');
   let html = '';
 
-  filtered.forEach(rec => {
-      html += `
-<div class="card">
-<img src="${rec.Image}" alt="${rec["Common Name"] || 'Wildlife'}">
-<h3>${rec["Common Name"]}</h3>
-<p><strong>Scientific Name:</strong> ${rec["Scientific Name"]}</p>
-<p>${rec["Description"]}</p>
-<p><strong>Type:</strong> ${rec["type"]}</p>
-<p>${getCountriesFound(rec)}</p>
-<button class="fav-btn" onclick="addToFavourites(${JSON.stringify(rec).replace(/"/g, '&quot;')})">⭐ Favorite</button>
-</div>
-`;
+  filtered.forEach((rec, index) => {
+    html += `
+      <div class="card" style="--delay: ${index * 0.1}s">
+        <img src="${rec.Image}" alt="${rec["Common Name"] || 'Wildlife'}">
+        <h3>${rec["Common Name"]}</h3>
+        <p><strong>Scientific Name:</strong> ${rec["Scientific Name"]}</p>
+        <p>${rec["Description"]}</p>
+        <p><strong>Type:</strong> ${rec["type"]}</p>
+        <p>${getCountriesFound(rec)}</p>
+        <button class="fav-btn" onclick="addToFavourites(${JSON.stringify(rec).replace(/"/g, '&quot;')})">⭐ Favorite</button>
+      </div>
+    `;
   });
+  
 
   gallery.innerHTML = html;
 

@@ -14,20 +14,29 @@
     <nav class="navbar">
         <div id="title-container">
             <img src="../images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
-            <h1 id="title">Island Friends</h1>
-            <img src="../images/profile.jpg" alt="profile" id="profile">
-        </div>
-        <h6>Where Caribbean Wildlife Come Alive!</h6>
-        <ul>
+            <div class="title-text-group">
+              <a href="explore.html" id="logo-link">
+                <h1 id="title">Island Friends</h1>
+              </a>
+              <h6 id="tagline">Where Caribbean Wildlife Come Alive!</h6>
+            </div>
+          </div>          
+          
+
+        <a href="index.html" id="sign-out-link" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">Sign Out</a>
+    
+        <ul class="nav-links">
             <li><a href="explore.html">Explore</a></li>
-            <li><a href="About Us.html">About Us </a></li>
+            <li><a href="About Us.html">About Us</a></li>
             <li><a href="Favourites.html">Favourites</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
-        <h2>Meet our Island Friends!</h2>
-        <h3 style="text-align: center;">Discover the vibrant wildlife of the Caribbean!</h3>
+        <div class="header-text">
+            <h2>Meet our Island Friends!</h2>
+            <h3 style="text-align: center;">Discover the vibrant wildlife of the Caribbean!</h3>
+        </div>
 
         <br>
 
@@ -69,23 +78,24 @@
 
         <!-- Filter Buttons -->
         <div id="filter-container">
-            <label for="type-filter">Filter by type:</label>
+            <label for="type-filter">Filter by Type:</label>
             <select id="type-filter">
                 <option value="all">All</option>
             </select>
 
-            <label for="country-filter">Filter by country:</label>
+            <label for="country-filter">Filter by Country:</label>
             <select id="country-filter">
                 <option value="all">All</option>
             </select>
         </div>
         <br>
         <!-- Did You Know? Section -->
-        <section>
+        <section class="fact-section">
             <h2>Did You Know?</h2>
             <p id="fact">The Caribbean is home to over 700 species of birds...</p>
             <button id="nextfact" onclick="showNextFact()">Next Fact</button>
-        </section>
+          </section>
+          
         <br>
 
         <!-- Loading Message -->
@@ -117,7 +127,10 @@
                 <button class="fav-btn">⭐ Favorite</button>
             </div> -->
             </div>
-
+        </div>
+        <!-- Back to Top Button -->
+        <div style="text-align: center; margin: 20px; font-weight: bold;">
+            <a href="#top" style="text-decoration: none; font-size: 1.2rem; color: #28190E;">⬆ Back to Top</a>
         </div>
     </main>
 
@@ -127,8 +140,12 @@
         <div class="footer-content">
             <div class="footer-left">
                 <img src="../images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
-                <h3>Island Friends</h3>
-            </div>
+                <div class="footer-text-group">
+                  <h3>Island Friends</h3>
+                  <h6>Where Caribbean Wildlife Come Alive!</h6>
+                </div>
+              </div>
+              
             <div class="footer-links">
                 <a href="explore.html">Explore</a>
                 <a href="About Us.html">About Us</a>
@@ -142,7 +159,7 @@
 
     <script>
 
-    
+
 
     </script>
 
