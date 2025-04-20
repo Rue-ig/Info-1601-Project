@@ -378,7 +378,7 @@ section:hover {
   color: #fefee3;
 }
 
-/* Notification message prompting the user to navigate to the Favourites page */
+/* Notification message prompting the user */
 .notification {
   position: fixed;
   bottom: 20px;
@@ -390,7 +390,7 @@ section:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   font-size: 1rem;
-  animation: fadeInOut 5s ease-in-out;
+  animation: fadeInOut 2s ease-in-out;
 }
 
 @keyframes fadeInOut {
