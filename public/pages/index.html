@@ -277,31 +277,29 @@
       <div class="form-box">
         <h2 id="form-title">Sign In</h2>
         <form id="sign-in-form">
+          <div id="error-message"></div> 
           <div class="tooltip">
-            <input type="email" placeholder="Email" required />
-            <span class="tooltip-text">Enter a valid email address</span>
+            <input type="text" id="sign-in-username" name="username" placeholder="Username" autocomplete="username" required />
+            <span class="tooltip-text">Enter your username</span>
           </div>
           <div class="tooltip">
-            <input type="password" placeholder="Password" required />
-            <span class="tooltip-text">Password must be at least 8 characters</span>
+            <input type="password" id="sign-in-password" name="password" placeholder="Password" autocomplete="current-password" required />
+            <span class="tooltip-text">Enter your password</span>
           </div>
           <button type="submit">Sign In</button>
         </form>
         <form id="sign-up-form" style="display: none;">
+          <div id="error-message"></div> 
           <div class="tooltip">
-            <input type="text" placeholder="Full Name" required />
-            <span class="tooltip-text">Enter your full name</span>
+            <input type="text" id="sign-up-username" name="username" placeholder="Username" autocomplete="username" required />
+            <span class="tooltip-text">Choose a unique username</span>
           </div>
           <div class="tooltip">
-            <input type="email" placeholder="Email" required />
-            <span class="tooltip-text">Enter a valid email address</span>
-          </div>
-          <div class="tooltip">
-            <input type="password" placeholder="Password" required />
+            <input type="password" id="sign-up-password" name="password" placeholder="Password" autocomplete="new-password" required />
             <span class="tooltip-text">Password must be at least 8 characters</span>
           </div>
           <div class="tooltip">
-            <input type="password" placeholder="Confirm Password" required />
+            <input type="password" id="sign-up-confirm-password" name="confirm-password" placeholder="Confirm Password" autocomplete="new-password" required />
             <span class="tooltip-text">Re-enter your password</span>
           </div>
           <button type="submit">Sign Up</button>
@@ -315,17 +313,15 @@
     <!-- Right Side (Animal Widget) -->
     <div class="animal-widget">
       <div class="animal-subtitle" id="animal-name">Loading...</div>
-      <img src="../images/placeholder.png" alt="Animal of the Day" class="animal-image" id="animal-image" />
+      <img alt="Animal of the Day" class="animal-image" id="animal-image" style="display: none;" />
     </div>
   </div>
-
   <script>
     // Toggle between Sign In and Sign Up forms
     const toggleLink = document.getElementById('toggle-link');
     const formTitle = document.getElementById('form-title');
     const signInForm = document.getElementById('sign-in-form');
     const signUpForm = document.getElementById('sign-up-form');
-
     toggleLink.addEventListener('click', (e) => {
       e.preventDefault();
       if (signInForm.style.display === 'none') {
@@ -355,8 +351,10 @@
 
         // Update the Animal of the Day section
         document.getElementById('animal-name').textContent = randomAnimal["Common Name"] || "Unknown Animal";
-        document.getElementById('animal-image').src = randomAnimal.Image || "../images/placeholder.png";
-        document.getElementById('animal-image').alt = randomAnimal["Common Name"] || "Animal of the Day";
+        const animalImage = document.getElementById('animal-image');
+        animalImage.src = randomAnimal.Image || 'https://via.placeholder.com/320x200?text=No+Image+Available';
+        animalImage.alt = randomAnimal["Common Name"] || "Animal of the Day";
+        animalImage.style.display = 'block'; // Show the image
       } catch (error) {
         console.error('Failed to fetch Animal of the Day:', error);
         document.getElementById('animal-name').textContent = "Failed to load animal.";
@@ -366,6 +364,59 @@
     // Call the function to fetch the Animal of the Day
     fetchAnimalOfTheDay();
   </script>
+  <script>
+    // Handle Sign-Up Form Submission
+    document.getElementById('sign-up-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('sign-up-username').value;
+      const password = document.getElementById('sign-up-password').value;
+      const confirmPassword = document.getElementById('sign-up-confirm-password').value;
 
+      if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      if (users[username]) {
+        alert('Username already exists. Please choose another.');
+        return;
+      }
+
+      users[username] = { password, favourites: [] };
+      localStorage.setItem('users', JSON.stringify(users));
+      console.log('[DEBUG] Users after sign-up:', users); // Debugging step
+      alert('Account created successfully!');
+      document.getElementById('toggle-link').click(); // Switch to sign-in form
+    });
+
+    // Handle Sign-In Form Submission
+    document.getElementById('sign-in-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('sign-in-username').value;
+      const password = document.getElementById('sign-in-password').value;
+
+      if (!username || !password) {
+        alert('Please fill in all fields.');
+        console.log('[DEBUG] Empty username or password during sign-in.'); // Debugging step
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      console.log('[DEBUG] Users during sign-in:', users); // Debugging step
+      console.log('[DEBUG] Current username:', username); // Debugging step
+      console.log('[DEBUG] Current password:', password); // Debugging step
+
+      if (users[username] && users[username].password === password) {
+        localStorage.setItem('currentUser', username);
+        console.log('[DEBUG] Sign-in successful for:', username); // Debugging step
+        alert(`Welcome, ${username}!`);
+        window.location.href = 'EXPLORE.html'; // Redirect to Explore page
+      } else {
+        console.log('[DEBUG] Sign-in failed for:', username); // Debugging step
+        alert('Invalid username or password.');
+      }
+    });
+  </script>
 </body>
 </html>

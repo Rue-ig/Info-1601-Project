@@ -1,0 +1,14 @@
+{
+  "name": "info-1601-project",
+  "version": "1.0.0",
+  "description": "A project for Info-1601",
+  "scripts": {
+    "start": "node index.js",
+    "build": "echo 'No build step defined'"
+  },
+  "dependencies": {
+    "firebase": "^9.23.0"
+  },
+  "author": "Your Name",
+  "license": "ISC"
+}

@@ -136,49 +136,47 @@ function renderFilteredGallery() {
 
 //Functionality for Favourites Button
 function addToFavourites(animal) {
-  try {
-    console.log("[DEBUG] Adding to favourites:", animal);
-    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-
-    // Avoid duplicates (check by Common Name or any unique field)
-    if (!favourites.some(fav => fav["Common Name"] === animal["Common Name"])) {
-      favourites.push(animal);
-      localStorage.setItem('favourites', JSON.stringify(favourites));
-      console.log("[DEBUG] Updated favourites in localStorage:", favourites);
-      alert(`${animal["Common Name"]} added to favourites!`);
-    } else {
-      console.warn(`[DEBUG] ${animal["Common Name"]} is already in favourites.`);
-      alert(`${animal["Common Name"]} is already in your favourites.`);
-    }
-  } catch (error) {
-    console.error("[ERROR] Failed to add to favourites:", error);
+  const currentUser = localStorage.getItem('currentUser');
+  if (!currentUser) {
+    alert('You must be signed in to add favourites.');
+    return;
   }
 
-  // Display a message prompting the user to navigate to the Favourites page
-  const messageContainer = document.createElement('div');
-  messageContainer.style.position = 'fixed';
-  messageContainer.style.bottom = '20px';
-  messageContainer.style.right = '20px';
-  messageContainer.style.backgroundColor = '#28190E';
-  messageContainer.style.color = 'white';
-  messageContainer.style.padding = '10px 20px';
-  messageContainer.style.borderRadius = '8px';
-  messageContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-  messageContainer.style.zIndex = '1000';
-  messageContainer.textContent = 'Animal added to favourites! Go to the Favourites page to view your saved animals.';
+  const users = JSON.parse(localStorage.getItem('users')) || {};
+  const userFavourites = users[currentUser]?.favourites || [];
 
-  document.body.appendChild(messageContainer);
+  // Avoid duplicates
+  if (!userFavourites.some(fav => fav["Common Name"] === animal["Common Name"])) {
+    if (!users[currentUser]) users[currentUser] = {};
+    users[currentUser].favourites = [...userFavourites, animal];
+    localStorage.setItem('users', JSON.stringify(users));
 
-  setTimeout(() => {
-      messageContainer.remove();
-  }, 5000); // Remove the message after 5 seconds
+    // Show custom notification
+    showNotification(`${animal["Common Name"]} added to favourites! Go to the Favourites page to view your saved animals.`);
+  } else {
+    alert(`${animal["Common Name"]} is already in your favourites.`);
+  }
 }
 
 function removeFromFavourites(commonName) {
-  let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-  favourites = favourites.filter(item => item["Common Name"] !== commonName);
-  localStorage.setItem('favourites', JSON.stringify(favourites));
-  loadFavourites(); // Refresh the list
+  const currentUser = localStorage.getItem('currentUser');
+  if (!currentUser) {
+    alert('You must be signed in to remove favourites.');
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('users')) || {};
+  const favourites = users[currentUser]?.favourites || [];
+
+  // Filter out the item to be removed
+  users[currentUser].favourites = favourites.filter(item => item["Common Name"] !== commonName);
+  localStorage.setItem('users', JSON.stringify(users));
+
+  // Refresh the favourites list
+  loadFavourites();
+
+  // Show custom notification
+  showNotification(`${commonName} has been removed from your favourites.`);
 }
 
 function showNotification(message) {
@@ -189,7 +187,7 @@ function showNotification(message) {
   document.body.appendChild(notification);
 
   setTimeout(() => {
-      notification.remove();
+    notification.remove();
   }, 5000); // Remove the notification after 5 seconds
 }
 
