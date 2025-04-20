@@ -1,7 +1,7 @@
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { firebaseApp } from "./firebaseConfig";
+import { app } from "./firebaseConfig";
 
-const auth = getAuth(firebaseApp);
+const auth = getAuth(app);
 
 // Function to display error messages
 function displayError(message) {
