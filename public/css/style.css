@@ -378,5 +378,23 @@ section:hover {
   color: #fefee3;
 }
 
+/* Notification message prompting the user to navigate to the Favourites page */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #28190E;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 1rem;
+  animation: fadeInOut 5s ease-in-out;
+}
 
-
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(20px); }
+  10%, 90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}

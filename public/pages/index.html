@@ -150,6 +150,7 @@
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
+      animation: fadeIn 3s ease-in-out;
     }
 
     header h1 {
@@ -224,6 +225,7 @@
       width: 320px;
       flex-shrink: 0; /* Prevent the widget from shrinking */
       text-align: center; /* Center-align content */
+      animation: fadeUp 3s ease-in-out;
     }
 
     .animal-widget h2 {
@@ -249,6 +251,18 @@
       border-radius: 8px;
       object-fit: cover; /* Ensure the image fits nicely */
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow to the image */
+    }
+
+    /* Style for the animal name using the Anton font */
+    #animal-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 24px;
+      color: #2e7d32; /* Forest green */
+      margin-bottom: 15px;
+    }
+
+    .form-box {
+      animation: fadeUp 3s ease-in-out;
     }
   </style>
 </head>
@@ -299,14 +313,13 @@
 
     <!-- Right Side (Animal Widget) -->
     <div class="animal-widget">
-      <h2>🐾 Animal of the Day</h2>
-      <div class="animal-subtitle">Red Fox</div>
-      <img src="../images/placeholder.png" alt="Animal of the Day" class="animal-image" />
+      <div class="animal-subtitle" id="animal-name">Loading...</div>
+      <img src="../images/placeholder.png" alt="Animal of the Day" class="animal-image" id="animal-image" />
     </div>
   </div>
 
-
   <script>
+    // Toggle between Sign In and Sign Up forms
     const toggleLink = document.getElementById('toggle-link');
     const formTitle = document.getElementById('form-title');
     const signInForm = document.getElementById('sign-in-form');
@@ -326,6 +339,31 @@
         toggleLink.textContent = 'Already have an account? Sign In';
       }
     });
+
+    // Fetch and display the Animal of the Day
+    async function fetchAnimalOfTheDay() {
+      const apiUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLh-vRW6fxasGQMdqJGzo9NFWjegB-FMraDNUMUSFlRLaSMz_33hK6kiRY-0C0xNgob6w307ciFCz-bOWPZfovIwM-ky7y89iEFlB1FSuvjtmXXJx-rhgL9yHD6_c2LEUZ77VCKMJYTHdBkk85ThzbfoPeqTQSdmsmsodf9jWEdgmyPKrBqMU9cY9dyA0Fo1_3ogr-ZM7zgujNJ0A7Z6jswCyT-0BNi8zsPfOVwVnd06391J7qxG5icZjR90PhDxMDBebEXdCml7CfFCBKCz9XoLpPds6Zl12hdEcYJgavBVSw9jY5O0A5qGd_pilJSLzs01NBVZ&lib=MWE_QBjJXwXXD4bogbvGarrsOYE1fA0Zf';
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        const records = data.records || data.data || [];
+
+        // Select a random animal
+        const randomAnimal = records[Math.floor(Math.random() * records.length)];
+
+        // Update the Animal of the Day section
+        document.getElementById('animal-name').textContent = randomAnimal["Common Name"] || "Unknown Animal";
+        document.getElementById('animal-image').src = randomAnimal.Image || "../images/placeholder.png";
+        document.getElementById('animal-image').alt = randomAnimal["Common Name"] || "Animal of the Day";
+      } catch (error) {
+        console.error('Failed to fetch Animal of the Day:', error);
+        document.getElementById('animal-name').textContent = "Failed to load animal.";
+      }
+    }
+
+    // Call the function to fetch the Animal of the Day
+    fetchAnimalOfTheDay();
   </script>
 
 </body>
