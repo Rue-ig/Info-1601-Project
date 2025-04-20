@@ -6,6 +6,8 @@
   <title>Sign In</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <script type="module" src="../auth.js" defer></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -278,33 +280,30 @@
         <h2 id="form-title">Sign In</h2>
         <form id="sign-in-form">
           <div class="tooltip">
-            <input type="email" placeholder="Email" required />
+            <input type="email" placeholder="Email" id="email" required />
             <span class="tooltip-text">Enter a valid email address</span>
           </div>
           <div class="tooltip">
-            <input type="password" placeholder="Password" required />
+            <input type="password" placeholder="Password" id="password" required />
             <span class="tooltip-text">Password must be at least 8 characters</span>
           </div>
-          <button type="submit">Sign In</button>
+          <button type="submit" id="submit">Sign In</button>
         </form>
+        
         <form id="sign-up-form" style="display: none;">
           <div class="tooltip">
-            <input type="text" placeholder="Full Name" required />
+            <input type="text" placeholder="Full Name" id="name-reg" required />
             <span class="tooltip-text">Enter your full name</span>
           </div>
           <div class="tooltip">
-            <input type="email" placeholder="Email" required />
+            <input type="email" placeholder="Email" id="email-reg" required />
             <span class="tooltip-text">Enter a valid email address</span>
           </div>
           <div class="tooltip">
-            <input type="password" placeholder="Password" required />
+            <input type="password" placeholder="Password" id="password-reg" required />
             <span class="tooltip-text">Password must be at least 8 characters</span>
           </div>
-          <div class="tooltip">
-            <input type="password" placeholder="Confirm Password" required />
-            <span class="tooltip-text">Re-enter your password</span>
-          </div>
-          <button type="submit">Sign Up</button>
+          <button type="submit" id="submit-reg">Sign Up</button>
         </form>
         <div class="options">
           <a href="#" id="toggle-link">Don't have an account? Sign Up</a>
