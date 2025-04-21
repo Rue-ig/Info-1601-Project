@@ -228,7 +228,7 @@ async function loadSlideshow() {
         <div class="mySlides fade">
           <img src="${rec.Image}" alt="${rec["Common Name"]}">
           <div class="slide-text-overlay">
-            <h3>Can you Guess?</h3>
+            <h3>Can You Guess?</h3>
             <p>${rec["Description"]}</p>
           </div>
         </div>
