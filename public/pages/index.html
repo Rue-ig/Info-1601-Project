@@ -385,7 +385,6 @@
 
       users[username] = { password, favourites: [] };
       localStorage.setItem('users', JSON.stringify(users));
-      console.log('[DEBUG] Users after sign-up:', users); // Debugging step
       alert('Account created successfully!');
       document.getElementById('toggle-link').click(); // Switch to sign-in form
     });
@@ -398,22 +397,15 @@
 
       if (!username || !password) {
         alert('Please fill in all fields.');
-        console.log('[DEBUG] Empty username or password during sign-in.'); // Debugging step
         return;
       }
 
       const users = JSON.parse(localStorage.getItem('users')) || {};
-      console.log('[DEBUG] Users during sign-in:', users); // Debugging step
-      console.log('[DEBUG] Current username:', username); // Debugging step
-      console.log('[DEBUG] Current password:', password); // Debugging step
-
       if (users[username] && users[username].password === password) {
         localStorage.setItem('currentUser', username);
-        console.log('[DEBUG] Sign-in successful for:', username); // Debugging step
         alert(`Welcome, ${username}!`);
         window.location.href = 'EXPLORE.html'; // Redirect to Explore page
       } else {
-        console.log('[DEBUG] Sign-in failed for:', username); // Debugging step
         alert('Invalid username or password.');
       }
     });
