@@ -112,11 +112,12 @@ function renderFilteredGallery() {
 
   filtered.forEach((rec, index) => {
     html += `
-      <div class="card" style="--delay: ${index * 0.1}s">
+      <div class="card" style="--delay: ${index * 0.1}s; text-align: left;">
         <img src="${rec.Image}" alt="${rec["Common Name"] || 'Wildlife'}">
         <h3>${rec["Common Name"]}</h3>
         <p><strong>Scientific Name:</strong> ${rec["Scientific Name"]}</p>
-        <p>${rec["Description"]}</p>
+        <p><strong>Local Name:</strong> ${rec["Local Name"]}</p>
+        <p><strong>Description:</strong> ${rec["Description"]}</p>
         <p><strong>Type:</strong> ${rec["type"]}</p>
         <p>${getCountriesFound(rec)}</p>
         <button class="fav-btn" onclick="addToFavourites(${JSON.stringify(rec).replace(/"/g, '&quot;')})">⭐ Favorite</button>
@@ -202,33 +203,51 @@ const apiUrl = 'https://script.googleusercontent.com/macros/echo?user_content_ke
 let slideIndex = 1;
 
 async function loadSlideshow() {
-try {
-  const res = await fetch(apiUrl);
-  const data = await res.json();
-  const records = data.records || data.data || [];
+  const loadingMessage = document.getElementById("slideshow-loading-message");
+  const slideshow = document.getElementById("slideshow-container");
+  const dots = document.getElementById("dot-container");
 
-  const slideshow = document.getElementById('animal-slide-container');
-  const dots = document.getElementById('dot-container');
+  // Show the loading message
+  if (loadingMessage) {
+    loadingMessage.style.display = "block";
+  }
 
-  slideshow.innerHTML = '';
-  dots.innerHTML = '';
+  try {
+    // Simulate fetching slideshow data (replace with actual API call if needed)
+    const res = await fetch(apiUrl); // Replace `apiUrl` with your actual API endpoint
+    const data = await res.json();
+    const records = data.records || data.data || [];
 
-  records.forEach((rec, i) => {
-    slideshow.innerHTML += `
-      <div class="mySlides fade">
-        <div class="numbertext">${i + 1} / ${records.length}</div>
-        <img src="${rec.Image}" style="width:100%" alt="${rec["Common Name"]}">
-        <div class="text">${rec["Common Name"]}: ${rec["Description"]}</div>
-      </div>
-    `;
+    // Clear existing slideshow content
+    slideshow.innerHTML = '';
+    dots.innerHTML = '';
 
-    dots.innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`;
-  });
+    // Populate slideshow with new content
+    records.forEach((rec, i) => {
+      slideshow.innerHTML += `
+        <div class="mySlides fade">
+          <img src="${rec.Image}" alt="${rec["Common Name"]}">
+          <div class="slide-text-overlay">
+            <h3>Can you Guess?</h3>
+            <p>${rec["Description"]}</p>
+          </div>
+        </div>
+      `;
 
-  showSlides(slideIndex);
-} catch (err) {
-  console.error('Failed to load slideshow data:', err);
-}
+      dots.innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`;
+    });
+
+    // Initialize slideshow
+    showSlides(1); // Assuming you have a `showSlides` function
+  } catch (err) {
+    console.error('Failed to load slideshow data:', err);
+    slideshow.innerHTML = '<p style="text-align: center; color: red;">Failed to load slideshow data.</p>';
+  } finally {
+    // Hide the loading message once the slideshow is ready
+    if (loadingMessage) {
+      loadingMessage.style.display = "none";
+    }
+  }
 }
 
 function plusSlides(n) {
@@ -240,24 +259,26 @@ showSlides(slideIndex = n);
 }
 
 function showSlides(n) {
-let slides = document.getElementsByClassName("mySlides");
-let dots = document.getElementsByClassName("dot");
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) { slideIndex = 1 }
+  if (n < 1) { slideIndex = slides.length }
 
-if (n > slides.length) { slideIndex = 1 }
-if (n < 1) { slideIndex = slides.length }
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
 
-for (let i = 0; i < slides.length; i++) {
-  slides[i].style.display = "none";
-}
+  if (slides.length > 0) {
+    slides[slideIndex - 1].style.display = "block";
+  }
 
-for (let i = 0; i < dots.length; i++) {
-  dots[i].className = dots[i].className.replace(" active", "");
-}
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
 
-if (slides.length > 0) {
-  slides[slideIndex - 1].style.display = "block";
-  dots[slideIndex - 1].className += " active";
-}
+  if (dots.length > 0) {
+    dots[slideIndex - 1].className += " active";
+  }
 }
 
 loadSlideshow();
