@@ -5,7 +5,7 @@ const auth = getAuth(app);
 
 // Function to display error messages
 function displayError(message) {
-    const errorDiv = document.getElementById("error-message"); // Make sure you have an element with this ID in your HTML
+    const errorDiv = document.getElementById("error-message"); // Matches index.html
     if (errorDiv) {
         errorDiv.textContent = message;
     } else {
@@ -14,12 +14,12 @@ function displayError(message) {
 }
 
 // Sign-in
-const submitButton = document.getElementById("submit");
+const submitButton = document.querySelector("#sign-in-form button"); // Updated to match index.html
 submitButton.addEventListener("click", async function(event) {
     event.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("sign-in-email").value; // Matches index.html
+    const password = document.getElementById("sign-in-password").value; // Matches index.html
 
     if (!email || !password) {
         displayError("Please enter both email and password.");
@@ -30,7 +30,7 @@ submitButton.addEventListener("click", async function(event) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log("Login successful:", user);
-        window.location.href = "/explore.html"; // Redirect on success
+        window.location.href = "./EXPLORE.html"; // Redirect on success
     } catch (error) {
         let errorMessage = "Login failed.";
         switch (error.code) {
@@ -49,13 +49,13 @@ submitButton.addEventListener("click", async function(event) {
 });
 
 // Sign-up
-const submitButtonReg = document.getElementById("submit-reg");
+const submitButtonReg = document.querySelector("#sign-up-form button"); // Updated to match index.html
 submitButtonReg.addEventListener("click", async function(event) {
     event.preventDefault();
 
-    const emailReg = document.getElementById("email-reg").value;
-    const passwordReg = document.getElementById("password-reg").value;
-    const nameReg = document.getElementById("name-reg").value;
+    const emailReg = document.getElementById("sign-up-email").value; // Matches index.html
+    const passwordReg = document.getElementById("sign-up-password").value; // Matches index.html
+    const nameReg = document.getElementById("sign-up-name").value; // Matches index.html
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, emailReg, passwordReg);
@@ -66,7 +66,7 @@ submitButtonReg.addEventListener("click", async function(event) {
         });
 
         console.log("User profile updated with name:", nameReg);
-        window.location.href = "./pages/EXPLORE.html"; // Redirect on success
+        window.location.href = "/EXPLORE.html"; // Redirect on success
     } catch (error) {
         let errorMessage = "Sign-up failed.";
         switch (error.code) {
