@@ -16,6 +16,12 @@ html, body {
   background: #FEFEE3;
 }
 
+main {
+  flex: 1; /* Pushes the footer to the bottom */
+  padding: 20px;
+}
+
+/* Header Design */
 nav {
   background-image: url("../images/signinbg.png");
   display: flex;
@@ -29,13 +35,11 @@ nav {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding-top: 20px;
-  margin: 0 auto;
+  margin-top: 20px;
   animation: fadeInUp 1s ease-out forwards;
   opacity: 0; /* Needed for animation to start hidden */
   animation-delay: 0.3s; /* Optional delay for effect timing */
 }
-
 
 #title-container:hover #logo {
   transform: rotate(360deg);
@@ -71,14 +75,12 @@ nav {
   border-radius: 50%;
 }
 
-
 #title + h6 {
   margin: 0;
   font-weight: normal;
   font-size: 1rem;
   color: #fefee3;
 }
-
 
 #logo-link {
   text-decoration: none;
@@ -91,6 +93,7 @@ nav {
   font-weight: bold;
   transition: color 0.3s ease, background-color 0.3s ease;
   padding: 8px 14px;
+  margin-top: 20px;
   margin-right: 10px;
   margin-bottom: 1em;
   border-radius: 6px;
@@ -101,7 +104,7 @@ nav {
 }
 
 #sign-out-link:hover {
-  background-color: #fefee3;
+  background: linear-gradient(135deg, #fefee3 0%, #a6cf8c 100%);
   color: #281A0E;
 }
 
@@ -114,19 +117,37 @@ nav {
   align-items: center;
 }
 
-.header-text h2,
-.header-text h3 {
+.header-text {
+  background: linear-gradient(135deg, #fefee3 0%, #a6cf8c 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 800px;
+  margin: 2rem auto;
+  animation: fadeInUp 1s ease-out forwards;
   opacity: 0;
-  transform: translateY(-15px);
-  animation: fadeInUp 0.7s ease forwards;
+  transform: translateY(20px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .header-text h2 {
-  animation-delay: 0.4s;
+  margin: 0;
+  font-size: 2.2rem;
+  color: #0C580D;
+  font-weight: 700;
 }
 
 .header-text h3 {
-  animation-delay: 0.6s;
+  margin-top: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #28190E;
+}
+
+.header-text:hover {
+  box-shadow: 0 0 16px rgba(12, 88, 13, 0.2);
+  transform: scale(1.01);
+  transition: all 0.3s ease;
 }
 
 @keyframes fadeInUp {
@@ -135,6 +156,7 @@ nav {
     transform: translateY(0);
   }
 }
+
 
 nav.navbar {
   display: flex;
@@ -187,13 +209,13 @@ nav.navbar {
 .nav-links a {
   color: white;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 15px;
   font-weight: bold;
   transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  background-color: #fefee3;
+  background: linear-gradient(135deg, #fefee3 0%, #a6cf8c 100%);
   color: #281A0E;
 }
 
@@ -214,89 +236,118 @@ nav ul li a {
   transition: background 0.3s ease;
 }
 
-main {
-  flex: 1; /* Pushes the footer to the bottom */
-  padding: 20px;
-}
 /* Slideshow Design */
 .slideshow-container {
-  max-width: 900px;
   position: relative;
-  margin: auto;
+  max-width: 900px;
+  margin: 1rem auto;
+  overflow: hidden;
+  border-radius: 7px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0; /* Start hidden */
+  transform: translateY(15px); /* Start slightly below */
+  animation-delay: 0.5s; /* Optional: Add a delay for timing */
+  aspect-ratio: 16 / 9; /* Maintain a 16:9 aspect ratio */
 }
 
-/* Hide the images by default */
 .mySlides {
   display: none;
+  position: relative;
 }
 
-/* Next & previous buttons */
+.mySlides img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Text Overlay Styling */
+.slide-text-overlay {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  max-width: 70%;
+  z-index: 2;
+}
+
+.slide-text-overlay h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.slide-text-overlay p {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+}
+
+.slide-text-overlay {
+  animation: fadeText 1s ease-in-out;
+}
+
+@keyframes fadeText {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Prev/Next buttons */
 .prev, .next {
   cursor: pointer;
   position: absolute;
   top: 50%;
-  width: auto;
-  margin-top: -22px;
-  padding: 16px;
-  color: white;
+  padding: 12px;
+  font-size: 22px;
   font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
   user-select: none;
+  transform: translateY(-50%);
+  z-index: 3;
+  transition: background 0.3s ease;
 }
 
-/* Position the "next button" to the right */
-.next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Caption text */
-.text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
+.prev {
+  left: 20px;
+}
+
+.next {
+  right: 20px;
+}
+
+/* Dots */
+.dots {
   text-align: center;
+  margin-top: 1rem;
 }
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-}
-
-/* The dots/bullets/indicators */
 .dot {
-  cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
+  height: 12px;
+  width: 12px;
+  margin: 0 4px;
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
-  transition: background-color 0.6s ease;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+.dot.active,
+.dot:hover {
+  background-color: #28190E;
 }
 
-.active, .dot:hover {
-  background-color: #717171;
-}
-
-/* Fading animation */
+/* Fade animation */
 .fade {
-  animation-name: fade;
-  animation-duration: 1.5s;
+  animation: fade 1s ease-in-out;
 }
 
 @keyframes fade {
@@ -306,18 +357,21 @@ main {
 
 /* Did You Know Fact Section */
 section {
-  background: white;
-  width: 100%;
-  max-width: 600px;
-  margin: 1rem auto;
-  padding: 1rem;
+  background: linear-gradient(135deg, #fefee3 0%, #a6cf8c 100%);
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   text-align: center;
-  transition: transform 0.2s ease-in-out;
+  max-width: 900px;
+  margin: 2rem auto;
+  animation: fadeInUp 1s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 section:hover {
-  transform: translateY(-5px);
+  box-shadow: 0 0 16px rgba(12, 88, 13, 0.2);
+  transform: scale(1.01);
+  transition: all 0.3s ease;
 }
 
 #nextfact {
@@ -345,6 +399,9 @@ section:hover {
   animation: fadeInUp 1s ease forwards;
   animation-delay: 0.6s; /* you can adjust this */
 }
+.fact-section h2{
+  color:#0C580D;
+}
 
 /* Gallery Design */
 .gallery {
@@ -356,7 +413,8 @@ section:hover {
 }
 
 .card {
-  background: white;
+  background: linear-gradient(135deg, #fefee3 0%, #a6cf8c 100%);
+
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   border-radius: var(--border-radius);
   padding: 1rem;
@@ -365,7 +423,7 @@ section:hover {
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease forwards;
   animation-delay: var(--delay, 0s);
-  transition: transform 0.3s ease; /* ✅ Needed for hover to work */
+  transition: transform 0.3s ease;
 }
 
 
