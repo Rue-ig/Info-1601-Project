@@ -120,7 +120,7 @@ function renderFilteredGallery() {
         <p><strong>Description:</strong> ${rec["Description"]}</p>
         <p><strong>Type:</strong> ${rec["type"]}</p>
         <p>${getCountriesFound(rec)}</p>
-        <button class="fav-btn" onclick="addToFavourites(${JSON.stringify(rec).replace(/"/g, '&quot;')})">⭐ Favorite</button>
+        <button class="fav-btn" onclick="addToFavourites(${JSON.stringify(rec).replace(/"/g, '&quot;')})">⭐ Favourite</button>
       </div>
     `;
   });
